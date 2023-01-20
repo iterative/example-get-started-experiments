@@ -1,0 +1,87 @@
+schema: '2.0'
+stages:
+  data_split:
+    cmd: python src/data_split.py
+    deps:
+    - path: data/pool_data
+      md5: 14d187e749ee5614e105741c719fa185.dir
+      size: 18999874
+      nfiles: 183
+    - path: src/data_split.py
+      md5: e25f97724df2d2dfdfd05e228b788a58
+      size: 1011
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        data_split:
+          test_pct: 0.15
+    outs:
+    - path: data/test_data
+      md5: b6cd4a52fbba568f0fc1967dc571a8b3.dir
+      size: 3494737
+      nfiles: 34
+    - path: data/train_data
+      md5: b01c0062e9e037fd9d6118753e4e9193.dir
+      size: 15498989
+      nfiles: 148
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/train_data
+      md5: b01c0062e9e037fd9d6118753e4e9193.dir
+      size: 15498989
+      nfiles: 148
+    - path: src/train.py
+      md5: ef9d70ee318c6b345ba974af4d2af4e4
+      size: 2088
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        train:
+          valid_pct: 0.1
+          arch: resnet18
+          img_size: 256
+          batch_size: 8
+          fine_tune_args:
+            epochs: 8
+            base_lr: 0.01
+    outs:
+    - path: models/model.pkl
+      md5: 7e0c71322ec09bcdb91278e2680ec531
+      size: 166824749
+    - path: results/train/metrics.json
+      md5: 4b5da459ff72b3eb1e1aebf8678b26d3
+      size: 171
+    - path: results/train/plots
+      md5: b8bd98edcf0246b9adf658ce4ec17bab.dir
+      size: 633
+      nfiles: 3
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/test_data
+      md5: b6cd4a52fbba568f0fc1967dc571a8b3.dir
+      size: 3494737
+      nfiles: 34
+    - path: models/model.pkl
+      md5: 7e0c71322ec09bcdb91278e2680ec531
+      size: 166824749
+    - path: src/evaluate.py
+      md5: d8f0f5f73bfb789b9ddeae20da2c08f1
+      size: 3230
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        evaluate:
+          n_samples_to_save: 10
+    outs:
+    - path: results/evaluate/metrics.json
+      md5: f5f11d6d1d9fd472820bfb65480ec8e4
+      size: 40
+    - path: results/evaluate/plots
+      md5: eb8402e0c04c92ea57612a819bc837cf.dir
+      size: 1280654
+      nfiles: 10
