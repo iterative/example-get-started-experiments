@@ -1,0 +1,65 @@
+name: Run Studio Experiment
+on: 
+  push:
+    paths:
+      - ".github/workflows/run-experiment.yaml"
+      - "data/**"
+      - "src/**"
+      - "params.yaml"
+      - "dvc.*"
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+jobs:
+  deploy-runner:
+    if: github.actor == 'iterative-studio[bot]'
+    environment: cloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: iterative/setup-cml@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-2
+          role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
+          role-duration-seconds: 43200
+      - name: Create Runner
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          cml runner launch --single \
+            --labels=cml \
+            --cloud=aws \
+            --cloud-region=us-east \
+            --cloud-hdd-size=40 \
+            --cloud-type=g5.2xlarge
+  runner-job:
+    needs: deploy-runner
+    runs-on: [ self-hosted, cml ]
+    environment: cloud
+    container:
+      image: iterativeai/cml:0-dvc2-base1-gpu
+      options: --gpus all --ipc host
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-2
+          role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
+          role-duration-seconds: 43200
+      - name: training
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
+          STUDIO_REPO_URL: ${{ secrets.STUDIO_REPO_URL }}
+          DVCLIVE_LOGLEVEL: DEBUG
+        run: |
+          pip install -r requirements.txt
+          dvc pull
+          cml ci --fetch-depth 0
+          cml comment create --publish --watch results/train/report.md & dvc exp run
+          dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
+          dvc push -r push_remote
+          cml pr --squash --skip-ci .
+          cml comment create --pr --publish results/evaluate/report.md
