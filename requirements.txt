@@ -1,0 +1,4 @@
+dvc[s3]>=2.43.1
+dvclive>=1.3.4
+fastai
+python-box
