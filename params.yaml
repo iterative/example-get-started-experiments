@@ -10,8 +10,8 @@ train:
   img_size: 256
   batch_size: 8
   fine_tune_args:
-    epochs: 8
-    base_lr: 0.001
+    epochs: 15
+    base_lr: 0.0008
 
 evaluate:
   n_samples_to_save: 10
