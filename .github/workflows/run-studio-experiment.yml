@@ -42,6 +42,11 @@ jobs:
       options: --gpus all --ipc host
     steps:
       - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-2
+          role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
+          role-duration-seconds: 43200
       - name: training
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
