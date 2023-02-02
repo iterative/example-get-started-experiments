@@ -53,8 +53,10 @@ jobs:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
           DVCLIVE_LOGLEVEL: DEBUG
+          DVC_STUDIO_CLIENT_LOGLEVEL: DEBUG
         run: |
           pip install -r requirements.txt
+          pip install git+https://github.com/iterative/dvc-studio-client@daavoo-patch-1#egg
           dvc pull -R data 
           cml ci --fetch-depth 0
           cml comment create --publish --watch results/train/report.md & dvc exp run
