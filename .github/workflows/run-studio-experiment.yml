@@ -67,7 +67,8 @@ jobs:
           dvc pull -R data 
           cml ci --fetch-depth 0
           
-          python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
+          echo "DEBUG GIT REMOTE URL"
+          echo python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
 
           cml comment create --publish --watch results/train/report.md & dvc exp run
           dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
