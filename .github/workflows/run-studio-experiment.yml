@@ -25,7 +25,7 @@ jobs:
           role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
           role-duration-seconds: 43200
       - name: DEBUG GIT REMOTE URL
-        run: git ls-remote --get-url && python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
+        run: git ls-remote --get-url
       - name: Create Runner
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
           role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
           role-duration-seconds: 43200
       - name: DEBUG GIT REMOTE URL
-        run: git ls-remote --get-url && python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
+        run: git ls-remote --get-url
       - name: training
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -61,8 +61,14 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install git+https://github.com/iterative/dvc-studio-client@daavoo-patch-1#egg
+          
+          python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
+          
           dvc pull -R data 
           cml ci --fetch-depth 0
+          
+          python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
+
           cml comment create --publish --watch results/train/report.md & dvc exp run
           dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
           dvc push -r push_remote
