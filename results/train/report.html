@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="5">
+    <title>DVC Plot</title>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.18.2"></script>
+    
+    <style>
+        table {
+            border-spacing: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+        <div id="params_yaml" style="text-align: center; padding: 10x">
+            <p>params_yaml</p>
+            <div style="display: flex;justify-content: center;">
+                <table>
+<thead>
+<tr><th>train_arch  </th><th style="text-align: right;">  epochs</th><th style="text-align: right;">  base_lr</th><th>model      </th><th style="text-align: right;">  batch_size</th><th style="text-align: right;">  batch_per_epoch</th><th>frozen  </th><th style="text-align: right;">  frozen_idx</th><th>transforms                                                     </th></tr>
+</thead>
+<tbody>
+<tr><td>resnet18    </td><td style="text-align: right;">       8</td><td style="text-align: right;">    0.005</td><td>DynamicUnet</td><td style="text-align: right;">           8</td><td style="text-align: right;">                6</td><td>False   </td><td style="text-align: right;">           0</td><td>[Pipeline: PILBase.create, Pipeline: partial -&gt; PILBase.create]</td></tr>
+</tbody>
+</table>
+            </div>
+        </div>
+
+        <div id="metrics_json" style="text-align: center; padding: 10x">
+            <p>metrics_json</p>
+            <div style="display: flex;justify-content: center;">
+                <table>
+<thead>
+<tr><th>train                         </th><th>eval                          </th><th style="text-align: right;">  dice_multi</th><th style="text-align: right;">  step</th><th style="text-align: right;">  evaluate/dice_multi</th></tr>
+</thead>
+<tbody>
+<tr><td>{&#x27;loss&#x27;: 0.029628027230501175}</td><td>{&#x27;loss&#x27;: 0.015622615814208984}</td><td style="text-align: right;">    0.923491</td><td style="text-align: right;">     8</td><td style="text-align: right;">             0.882318</td></tr>
+</tbody>
+</table>
+            </div>
+        </div>
+
+    <div id = "static_dice_multi">
+        <script type = "text/javascript">
+            var spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "values": [
+    {
+        "dice_multi": "0.49551990639529514",
+        "rev": "workspace",
+        "step": "0"
+    },
+    {
+        "dice_multi": "0.49551990639529514",
+        "rev": "workspace",
+        "step": "1"
+    },
+    {
+        "dice_multi": "0.9022891157793007",
+        "rev": "workspace",
+        "step": "2"
+    },
+    {
+        "dice_multi": "0.9000127046693126",
+        "rev": "workspace",
+        "step": "3"
+    },
+    {
+        "dice_multi": "0.8263205873195264",
+        "rev": "workspace",
+        "step": "4"
+    },
+    {
+        "dice_multi": "0.9031968858271588",
+        "rev": "workspace",
+        "step": "5"
+    },
+    {
+        "dice_multi": "0.9134832658650844",
+        "rev": "workspace",
+        "step": "6"
+    },
+    {
+        "dice_multi": "0.9204579002023028",
+        "rev": "workspace",
+        "step": "7"
+    },
+    {
+        "dice_multi": "0.9234911367371956",
+        "rev": "workspace",
+        "step": "8"
+    }
+]
+    },
+    "title": "",
+    "width": 300,
+    "height": 300,
+    "mark": {
+        "type": "line",
+        "point": true,
+        "tooltip": {
+            "content": "data"
+        }
+    },
+    "encoding": {
+        "x": {
+            "field": "step",
+            "type": "quantitative",
+            "title": "step"
+        },
+        "y": {
+            "field": "dice_multi",
+            "type": "quantitative",
+            "title": "dice_multi",
+            "scale": {
+                "zero": false
+            }
+        },
+        "color": {
+            "field": "rev",
+            "type": "nominal"
+        }
+    }
+}
+;
+            vegaEmbed('#static_dice_multi', spec);
+        </script>
+    </div>
+    
+
+    <div id = "static_eval_loss">
+        <script type = "text/javascript">
+            var spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "values": [
+    {
+        "eval/loss": "0.11367082595825195",
+        "rev": "workspace",
+        "step": "0"
+    },
+    {
+        "eval/loss": "0.07477424293756485",
+        "rev": "workspace",
+        "step": "1"
+    },
+    {
+        "eval/loss": "0.04896222800016403",
+        "rev": "workspace",
+        "step": "2"
+    },
+    {
+        "eval/loss": "0.02243565209209919",
+        "rev": "workspace",
+        "step": "3"
+    },
+    {
+        "eval/loss": "0.02438991889357567",
+        "rev": "workspace",
+        "step": "4"
+    },
+    {
+        "eval/loss": "0.019535766914486885",
+        "rev": "workspace",
+        "step": "5"
+    },
+    {
+        "eval/loss": "0.017206579446792603",
+        "rev": "workspace",
+        "step": "6"
+    },
+    {
+        "eval/loss": "0.015947792679071426",
+        "rev": "workspace",
+        "step": "7"
+    },
+    {
+        "eval/loss": "0.015622615814208984",
+        "rev": "workspace",
+        "step": "8"
+    }
+]
+    },
+    "title": "",
+    "width": 300,
+    "height": 300,
+    "mark": {
+        "type": "line",
+        "point": true,
+        "tooltip": {
+            "content": "data"
+        }
+    },
+    "encoding": {
+        "x": {
+            "field": "step",
+            "type": "quantitative",
+            "title": "step"
+        },
+        "y": {
+            "field": "eval/loss",
+            "type": "quantitative",
+            "title": "eval/loss",
+            "scale": {
+                "zero": false
+            }
+        },
+        "color": {
+            "field": "rev",
+            "type": "nominal"
+        }
+    }
+}
+;
+            vegaEmbed('#static_eval_loss', spec);
+        </script>
+    </div>
+    
+
+    <div id = "static_train_loss">
+        <script type = "text/javascript">
+            var spec = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "values": [
+    {
+        "rev": "workspace",
+        "step": "0",
+        "train/loss": "1.0015716552734375"
+    },
+    {
+        "rev": "workspace",
+        "step": "1",
+        "train/loss": "0.10505650192499161"
+    },
+    {
+        "rev": "workspace",
+        "step": "2",
+        "train/loss": "0.07626713812351227"
+    },
+    {
+        "rev": "workspace",
+        "step": "3",
+        "train/loss": "0.0606592558324337"
+    },
+    {
+        "rev": "workspace",
+        "step": "4",
+        "train/loss": "0.04933733865618706"
+    },
+    {
+        "rev": "workspace",
+        "step": "5",
+        "train/loss": "0.04256625846028328"
+    },
+    {
+        "rev": "workspace",
+        "step": "6",
+        "train/loss": "0.03703697770833969"
+    },
+    {
+        "rev": "workspace",
+        "step": "7",
+        "train/loss": "0.03282277658581734"
+    },
+    {
+        "rev": "workspace",
+        "step": "8",
+        "train/loss": "0.029628027230501175"
+    }
+]
+    },
+    "title": "",
+    "width": 300,
+    "height": 300,
+    "mark": {
+        "type": "line",
+        "point": true,
+        "tooltip": {
+            "content": "data"
+        }
+    },
+    "encoding": {
+        "x": {
+            "field": "step",
+            "type": "quantitative",
+            "title": "step"
+        },
+        "y": {
+            "field": "train/loss",
+            "type": "quantitative",
+            "title": "train/loss",
+            "scale": {
+                "zero": false
+            }
+        },
+        "color": {
+            "field": "rev",
+            "type": "nominal"
+        }
+    }
+}
+;
+            vegaEmbed('#static_train_loss', spec);
+        </script>
+    </div>
+    
+</body>
+</html>
