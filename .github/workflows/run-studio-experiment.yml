@@ -24,6 +24,8 @@ jobs:
           aws-region: us-east-2
           role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
           role-duration-seconds: 43200
+      - name: DEBUG GIT REMOTE URL
+        run: git ls-remote --get-url
       - name: Create Runner
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -48,6 +50,8 @@ jobs:
           aws-region: us-east-2
           role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
           role-duration-seconds: 43200
+      - name: DEBUG GIT REMOTE URL
+        run: git ls-remote --get-url
       - name: training
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
