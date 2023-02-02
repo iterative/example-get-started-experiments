@@ -25,7 +25,7 @@ jobs:
           role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
           role-duration-seconds: 43200
       - name: DEBUG GIT REMOTE URL
-        run: git ls-remote --get-url
+        run: git ls-remote --get-url && python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
       - name: Create Runner
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
           role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
           role-duration-seconds: 43200
       - name: DEBUG GIT REMOTE URL
-        run: git ls-remote --get-url
+        run: git ls-remote --get-url && python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
       - name: training
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
