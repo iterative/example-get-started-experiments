@@ -58,6 +58,7 @@ jobs:
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
           DVCLIVE_LOGLEVEL: DEBUG
           DVC_STUDIO_CLIENT_LOGLEVEL: DEBUG
+          STUDIO_REPO_URL: ${{ secrets.STUDIO_REPO_URL }}
         run: |
           pip install -r requirements.txt
           pip install git+https://github.com/iterative/dvc-studio-client@daavoo-patch-1#egg
@@ -65,7 +66,14 @@ jobs:
           python -c "from git import Repo;git_repo=Repo();git_repo.git.ls_remote('--get-url')"
           
           dvc pull -R data 
+          
+          echo "before cml ci"
+          git ls-remote --get-url
+          
           cml ci --fetch-depth 0
+          
+          echo "after cml ci"
+          git ls-remote --get-url
           
           python -c "from git import Repo;git_repo=Repo();print(git_repo.git.ls_remote('--get-url'))"
 
