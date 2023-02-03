@@ -54,7 +54,6 @@ jobs:
         run: git ls-remote --get-url
       - name: training
         env:
-          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
           DVCLIVE_LOGLEVEL: DEBUG
           DVC_STUDIO_CLIENT_LOGLEVEL: DEBUG
