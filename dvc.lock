@@ -18,19 +18,19 @@ stages:
           test_pct: 0.15
     outs:
     - path: data/test_data
-      md5: b6cd4a52fbba568f0fc1967dc571a8b3.dir
-      size: 3494737
+      md5: 3ca874f325c33ad98228110f4cd99d7b.dir
+      size: 3558750
       nfiles: 34
     - path: data/train_data
-      md5: b01c0062e9e037fd9d6118753e4e9193.dir
-      size: 15498989
+      md5: 50863cd5a2d06a375060fdd0d8bd1098.dir
+      size: 15434976
       nfiles: 148
   train:
     cmd: python src/train.py
     deps:
     - path: data/train_data
-      md5: b01c0062e9e037fd9d6118753e4e9193.dir
-      size: 15498989
+      md5: 50863cd5a2d06a375060fdd0d8bd1098.dir
+      size: 15434976
       nfiles: 148
     - path: src/train.py
       md5: ef9d70ee318c6b345ba974af4d2af4e4
@@ -45,29 +45,29 @@ stages:
           img_size: 256
           batch_size: 8
           fine_tune_args:
-            epochs: 8
+            epochs: 3
             base_lr: 0.005
     outs:
     - path: models/model.pkl
-      md5: b4c1f4ceb876c13dbf6c0feb6ff37848
-      size: 166824749
+      md5: 4f89ad44ee60c2c37b5a256733cd2dbc
+      size: 166822253
     - path: results/train/metrics.json
-      md5: a6979c0dbf71d7ab0a1a91e21c5bc28a
+      md5: 4fabfef30ca2265324600d1ac3bdb756
       size: 170
     - path: results/train/plots
-      md5: af8d5b6a270cb4b61e3c11f46d1634ac.dir
-      size: 623
+      md5: 19eb242e0a490b14e5ec14c3dd737b6f.dir
+      size: 297
       nfiles: 3
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: data/test_data
-      md5: b6cd4a52fbba568f0fc1967dc571a8b3.dir
-      size: 3494737
+      md5: 3ca874f325c33ad98228110f4cd99d7b.dir
+      size: 3558750
       nfiles: 34
     - path: models/model.pkl
-      md5: b4c1f4ceb876c13dbf6c0feb6ff37848
-      size: 166824749
+      md5: 4f89ad44ee60c2c37b5a256733cd2dbc
+      size: 166822253
     - path: src/evaluate.py
       md5: fdaf12892360591bd4756f10cf8c0532
       size: 3299
@@ -79,9 +79,9 @@ stages:
           n_samples_to_save: 10
     outs:
     - path: results/evaluate/metrics.json
-      md5: 3a8052527d1cfb46127be65d1cf4c238
+      md5: d1da21aa402f74ec9b5d2de01c4145cc
       size: 40
     - path: results/evaluate/plots
-      md5: 52a6aff3fce7440b0bc6331f112759e3.dir
-      size: 15202670
+      md5: b5f70c13d14fcdce9e94f94d6d60a186.dir
+      size: 15600472
       nfiles: 10

@@ -8,12 +8,12 @@ params.yaml
 
 metrics.json
 
-| train                        | eval                           |   dice_multi |   step |
-|------------------------------|--------------------------------|--------------|--------|
-| {'loss': 0.0257855374366045} | {'loss': 0.022797705605626106} |     0.912109 |      8 |
+| train                         | eval                          |   dice_multi |   step |
+|-------------------------------|-------------------------------|--------------|--------|
+| {'loss': 0.05781709775328636} | {'loss': 0.02446618862450123} |      0.90408 |      3 |
 
 ![static/dice_multi](static/dice_multi.png)
 
-![static/eval/loss](static/eval/loss.png)
-
 ![static/train/loss](static/train/loss.png)
+
+![static/eval/loss](static/eval/loss.png)
