@@ -18,19 +18,19 @@ stages:
           test_pct: 0.15
     outs:
     - path: data/test_data
-      md5: 1aaaae3a3a49ba82afb51a608920bd66.dir
-      size: 3460069
+      md5: 3ca874f325c33ad98228110f4cd99d7b.dir
+      size: 3558750
       nfiles: 34
     - path: data/train_data
-      md5: 115c913e6b227e77f9210c2acc101c6a.dir
-      size: 15533657
+      md5: 50863cd5a2d06a375060fdd0d8bd1098.dir
+      size: 15434976
       nfiles: 148
   train:
     cmd: python src/train.py
     deps:
     - path: data/train_data
-      md5: 115c913e6b227e77f9210c2acc101c6a.dir
-      size: 15533657
+      md5: 50863cd5a2d06a375060fdd0d8bd1098.dir
+      size: 15434976
       nfiles: 148
     - path: src/train.py
       md5: ccb5f476a805935cbb06150c53d8f293
@@ -42,32 +42,32 @@ stages:
         train:
           valid_pct: 0.1
           arch: resnet18
-          img_size: 256
+          img_size: 512
           batch_size: 8
           fine_tune_args:
             epochs: 8
             base_lr: 0.01
     outs:
     - path: models/model.pkl
-      md5: 87c7047006d19752b90dcaba59dda9bd
-      size: 166824749
+      md5: 477b087034a730c5df2f893271435cb9
+      size: 293440301
     - path: results/train/metrics.json
-      md5: 51daf3df32e192d34f67786437355e79
-      size: 172
+      md5: 3ae5714ae3a66904cb1ddc0fe063b92b
+      size: 171
     - path: results/train/plots
-      md5: 5049c30d696e1a5aeaf7fc10d24bb002.dir
-      size: 628
+      md5: 2f5500f6d28135555be0bef493235f69.dir
+      size: 627
       nfiles: 3
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: data/test_data
-      md5: 1aaaae3a3a49ba82afb51a608920bd66.dir
-      size: 3460069
+      md5: 3ca874f325c33ad98228110f4cd99d7b.dir
+      size: 3558750
       nfiles: 34
     - path: models/model.pkl
-      md5: 87c7047006d19752b90dcaba59dda9bd
-      size: 166824749
+      md5: 477b087034a730c5df2f893271435cb9
+      size: 293440301
     - path: src/evaluate.py
       md5: 258e2ffb3bdfe69e300f0a961d9ef998
       size: 3314
@@ -79,9 +79,9 @@ stages:
           n_samples_to_save: 10
     outs:
     - path: results/evaluate/metrics.json
-      md5: ac5aef0e59e400fae2a0b8c16c94270d
+      md5: 9811e796676483c2142ef7df5107a221
       size: 40
     - path: results/evaluate/plots
-      md5: 5970edf13210b7109fd6503f06f14013.dir
-      size: 14563694
+      md5: 441279213e32a691f21f9f65f97747d2.dir
+      size: 15580133
       nfiles: 10
