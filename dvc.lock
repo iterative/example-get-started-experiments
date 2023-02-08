@@ -41,7 +41,7 @@ stages:
           random_seed: 42
         train:
           valid_pct: 0.1
-          arch: resnet18
+          arch: resnet34
           img_size: 256
           batch_size: 8
           fine_tune_args:
@@ -49,14 +49,14 @@ stages:
             base_lr: 0.005
     outs:
     - path: models/model.pkl
-      md5: b4c1f4ceb876c13dbf6c0feb6ff37848
-      size: 166824749
+      md5: 2186a67b241845f39d45bfba537a998b
+      size: 207322733
     - path: results/train/metrics.json
-      md5: a6979c0dbf71d7ab0a1a91e21c5bc28a
+      md5: 3d4774d572cb20f0c1963e1ab8ebe6b7
       size: 170
     - path: results/train/plots
-      md5: af8d5b6a270cb4b61e3c11f46d1634ac.dir
-      size: 623
+      md5: e10d194ed2b35cd1a86247b1fe435b6f.dir
+      size: 624
       nfiles: 3
   evaluate:
     cmd: python src/evaluate.py
@@ -66,8 +66,8 @@ stages:
       size: 3494737
       nfiles: 34
     - path: models/model.pkl
-      md5: b4c1f4ceb876c13dbf6c0feb6ff37848
-      size: 166824749
+      md5: 2186a67b241845f39d45bfba537a998b
+      size: 207322733
     - path: src/evaluate.py
       md5: fdaf12892360591bd4756f10cf8c0532
       size: 3299
@@ -79,9 +79,9 @@ stages:
           n_samples_to_save: 10
     outs:
     - path: results/evaluate/metrics.json
-      md5: 3a8052527d1cfb46127be65d1cf4c238
+      md5: b1e7e9b04a95df605e245037817f58a7
       size: 40
     - path: results/evaluate/plots
-      md5: 52a6aff3fce7440b0bc6331f112759e3.dir
-      size: 15202670
+      md5: edae8a44d919dc0be5fcf0a3f305d462.dir
+      size: 15205937
       nfiles: 10
