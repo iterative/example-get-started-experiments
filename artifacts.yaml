@@ -1,0 +1,6 @@
+pool-seg-model:
+  labels:
+  - segmentation
+  - pools
+  path: models/model.pkl
+  type: model
