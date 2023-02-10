@@ -45,18 +45,18 @@ stages:
           img_size: 256
           batch_size: 8
           fine_tune_args:
-            epochs: 8
+            epochs: 25
             base_lr: 0.005
     outs:
     - path: models/model.pkl
-      md5: 8c87c9a44d93f9bbffe8ebe595b7c7db
-      size: 166829293
+      md5: 394d67fc55ae04935da47104b7a3b416
+      size: 166846125
     - path: results/train/metrics.json
-      md5: 6e3ab3c5b4d67f1f08da9312ec8885c7
-      size: 172
+      md5: e86087806fca00ae7902401644565b91
+      size: 173
     - path: results/train/plots
-      md5: 8a98045596ade882aad4167ba4d40064.dir
-      size: 629
+      md5: a968718ec6b14fc2042844133a3fe2eb.dir
+      size: 1810
       nfiles: 3
   evaluate:
     cmd: python src/evaluate.py
@@ -66,8 +66,8 @@ stages:
       size: 6604471
       nfiles: 64
     - path: models/model.pkl
-      md5: 8c87c9a44d93f9bbffe8ebe595b7c7db
-      size: 166829293
+      md5: 394d67fc55ae04935da47104b7a3b416
+      size: 166846125
     - path: src/evaluate.py
       md5: 44db98cdb6bddf92d44ca3c74783dda1
       size: 3379
@@ -79,9 +79,9 @@ stages:
           n_samples_to_save: 10
     outs:
     - path: results/evaluate/metrics.json
-      md5: 397d4fd86389961df736012363920ae3
+      md5: efdb33f69dfd4d682c464ced45e371c9
       size: 40
     - path: results/evaluate/plots
-      md5: 4c399954c49144c098845865806cd075.dir
-      size: 1329922
+      md5: 674434daaab574e6d6eab8419150736e.dir
+      size: 1334359
       nfiles: 10
