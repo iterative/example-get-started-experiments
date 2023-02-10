@@ -4,13 +4,13 @@ params.yaml
 
 | model       |   batch_size |   batch_per_epoch | frozen   |   frozen_idx | transforms                                                      |
 |-------------|--------------|-------------------|----------|--------------|-----------------------------------------------------------------|
-| DynamicUnet |            8 |                 8 | False    |            0 | [Pipeline: PILBase.create, Pipeline: partial -> PILBase.create] |
+| DynamicUnet |            8 |                16 | False    |            0 | [Pipeline: PILBase.create, Pipeline: partial -> PILBase.create] |
 
 metrics.json
 
 | train                          | eval                           |   dice_multi |   step |
 |--------------------------------|--------------------------------|--------------|--------|
-| {'loss': 0.024200882762670517} | {'loss': 0.020534532144665718} |     0.893824 |      8 |
+| {'loss': 0.014939487911760807} | {'loss': 0.010426105000078678} |     0.936115 |      8 |
 
 ![static/dice_multi](static/dice_multi.png)
 
