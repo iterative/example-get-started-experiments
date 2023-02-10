@@ -1,6 +1,6 @@
 model: DynamicUnet
 batch_size: 8
-batch_per_epoch: 8
+batch_per_epoch: 16
 frozen: false
 frozen_idx: 0
 transforms: '[Pipeline: PILBase.create, Pipeline: partial -> PILBase.create]'
