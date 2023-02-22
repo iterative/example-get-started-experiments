@@ -6,7 +6,6 @@
       "ghcr.io/devcontainers/features/nvidia-cuda:1": {
         "installCudnn": true
       },
-      "ghcr.io/iterative/features/dvc:1": {},
       "ghcr.io/iterative/features/nvtop:1": {}
     },
     "extensions": [
