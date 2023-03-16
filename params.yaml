@@ -1,5 +1,5 @@
 base:
-  random_seed: 42
+  random_seed: 43
 
 data_split:
   test_pct: 0.15
