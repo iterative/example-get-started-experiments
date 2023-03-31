@@ -59,7 +59,8 @@ jobs:
           dvc pull
           cml ci --fetch-depth 0
           cml comment create --publish --watch results/train/report.md & dvc exp run
-          dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
-          dvc push -r push_remote
+          dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools
+          dvc config feature.studio_token ${{ secrets.STUDIO_TOKEN }}
+          dvc exp push -r push_remote 
           cml pr --squash --skip-ci .
           cml comment create --pr --publish results/evaluate/report.md
