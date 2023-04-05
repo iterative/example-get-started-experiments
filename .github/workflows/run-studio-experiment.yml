@@ -1,19 +1,19 @@
 name: Run Studio Experiment
+
 on: 
-  push:
-    paths:
-      - ".github/workflows/run-experiment.yaml"
-      - "data/**"
-      - "src/**"
-      - "params.yaml"
-      - "dvc.*"
+  workflow_dispatch:
+    inputs:
+      exp-run-args:
+        description: 'Args to be passed to dvc exp run call'
+        required: false
+        default: ''
+
 permissions:
   contents: write
   id-token: write
   pull-requests: write
 jobs:
   deploy-runner:
-    if: github.actor == 'iterative-studio[bot]'
     environment: cloud
     runs-on: ubuntu-latest
     steps:
@@ -57,9 +57,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           dvc pull
-          cml ci --fetch-depth 0
-          cml comment create --publish --watch results/train/report.md & dvc exp run
+          dvc exp run {{ github.event.inputs.exp-run-args }}
           dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
           dvc push -r push_remote
-          cml pr --squash --skip-ci .
-          cml comment create --pr --publish results/evaluate/report.md
+          dvc exp push --no-cache --rev HEAD
