@@ -1,4 +1,4 @@
-name: Run Studio Experiment
+name: Run Experiment
 
 on: 
   workflow_dispatch:
