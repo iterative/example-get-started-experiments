@@ -60,4 +60,4 @@ jobs:
           dvc exp run ${{ github.event.inputs.exp-run-args }}
           dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
           dvc push -r push_remote
-          dvc exp push origin --no-cache --rev HEAD
+          dvc exp push origin -A --no-cache
