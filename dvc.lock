@@ -42,15 +42,15 @@ stages:
         train:
           valid_pct: 0.1
           arch: resnet34
-          img_size: 256
+          img_size: 384
           batch_size: 8
           fine_tune_args:
             epochs: 8
             base_lr: 0.01
     outs:
     - path: models/model.pkl
-      md5: 5496716df021bebec07f99035b00cd0d
-      size: 207322797
+      md5: 94419e850c8bff4ba279c1c55dadde08
+      size: 260079277
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -59,8 +59,8 @@ stages:
       size: 3661405
       nfiles: 34
     - path: models/model.pkl
-      md5: 5496716df021bebec07f99035b00cd0d
-      size: 207322797
+      md5: 94419e850c8bff4ba279c1c55dadde08
+      size: 260079277
     - path: src/evaluate.py
       md5: e2d5d64f6064e95b7661b239b8b20626
       size: 3364
