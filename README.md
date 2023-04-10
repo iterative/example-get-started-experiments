@@ -11,7 +11,7 @@ This is an auto-generated repository for use in [DVC](https://dvc.org)
 This is a Computer Vision (CV) project that solves the problem of segmenting out 
 swimming pools from satellite images. 
 
-![Example result](./results/evaluate/plots/images/REGION_1-24_0_1024_0_1024.png)
+![Example result](./results/evaluate/plots/images/REGION_2-4_1024_2048_1024_2048.png)
 
 We use a slightly modified version of the [BH-Pools dataset](http://patreo.dcc.ufmg.br/2020/07/29/bh-pools-watertanks-datasets/):
 we split the original 4k images into tiles of 1024x1024 pixels.
