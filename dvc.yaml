@@ -1,0 +1,31 @@
+stages:
+  data_split:
+    cmd: python src/data_split.py
+    deps:
+    - data/pool_data
+    - src/data_split.py
+    params:
+    - base
+    - data_split
+    outs:
+    - data/test_data
+    - data/train_data
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/train_data
+    - src/train.py
+    params:
+    - base
+    - train
+    outs:
+    - models/model.pkl
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - data/test_data
+    - models/model.pkl
+    - src/evaluate.py
+    params:
+    - base
+    - evaluate
