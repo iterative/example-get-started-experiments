@@ -1,0 +1,27 @@
+# DVC Report
+
+metrics.json
+
+|   dice_multi |
+|--------------|
+|     0.866746 |
+
+![REGION_3-8_1136_2160_1024_2048.png](plots/images/REGION_3-8_1136_2160_1024_2048.png)
+
+![REGION_4-12_1136_2160_2048_3072.png](plots/images/REGION_4-12_1136_2160_2048_3072.png)
+
+![REGION_4-22_1136_2160_1024_2048.png](plots/images/REGION_4-22_1136_2160_1024_2048.png)
+
+![REGION_5-15_0_1024_1024_2048.png](plots/images/REGION_5-15_0_1024_1024_2048.png)
+
+![REGION_5-15_1024_2048_0_1024.png](plots/images/REGION_5-15_1024_2048_0_1024.png)
+
+![REGION_5-15_1136_2160_0_1024.png](plots/images/REGION_5-15_1136_2160_0_1024.png)
+
+![REGION_5-7_1136_2160_2048_3072.png](plots/images/REGION_5-7_1136_2160_2048_3072.png)
+
+![REGION_7-3_1024_2048_1024_2048.png](plots/images/REGION_7-3_1024_2048_1024_2048.png)
+
+![REGION_7-3_1136_2160_1024_2048.png](plots/images/REGION_7-3_1136_2160_1024_2048.png)
+
+![REGION_8-24_1136_2160_1024_2048.png](plots/images/REGION_8-24_1136_2160_1024_2048.png)

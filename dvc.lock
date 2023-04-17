@@ -1,0 +1,72 @@
+schema: '2.0'
+stages:
+  data_split:
+    cmd: python src/data_split.py
+    deps:
+    - path: data/pool_data
+      md5: 14d187e749ee5614e105741c719fa185.dir
+      size: 18999874
+      nfiles: 183
+    - path: src/data_split.py
+      md5: e25f97724df2d2dfdfd05e228b788a58
+      size: 1011
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        data_split:
+          test_pct: 0.15
+    outs:
+    - path: data/test_data
+      md5: 1f0a1e034255ad40c65cf4858ed404cd.dir
+      size: 3462943
+      nfiles: 34
+    - path: data/train_data
+      md5: a14914527fa6a82f91911013614d4068.dir
+      size: 15530783
+      nfiles: 148
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/train_data
+      md5: a14914527fa6a82f91911013614d4068.dir
+      size: 15530783
+      nfiles: 148
+    - path: src/train.py
+      md5: ef9d70ee318c6b345ba974af4d2af4e4
+      size: 2088
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        train:
+          valid_pct: 0.1
+          arch: shufflenet_v2_x2_0
+          img_size: 256
+          batch_size: 8
+          fine_tune_args:
+            epochs: 8
+            base_lr: 0.01
+    outs:
+    - path: models/model.pkl
+      md5: cf0c77f4d1a1b222e39f83908959449a
+      size: 201335
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/test_data
+      md5: 1f0a1e034255ad40c65cf4858ed404cd.dir
+      size: 3462943
+      nfiles: 34
+    - path: models/model.pkl
+      md5: cf0c77f4d1a1b222e39f83908959449a
+      size: 201335
+    - path: src/evaluate.py
+      md5: e2d5d64f6064e95b7661b239b8b20626
+      size: 3364
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        evaluate:
+          n_samples_to_save: 10
