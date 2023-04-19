@@ -4,7 +4,7 @@ metrics.json
 
 |   dice_multi |
 |--------------|
-|     0.866746 |
+|     0.891619 |
 
 ![REGION_3-8_1136_2160_1024_2048.png](plots/images/REGION_3-8_1136_2160_1024_2048.png)
 

@@ -41,7 +41,7 @@ stages:
           random_seed: 42
         train:
           valid_pct: 0.1
-          arch: shufflenet_v2_x2_0
+          arch: resnet34
           img_size: 256
           batch_size: 8
           fine_tune_args:
@@ -49,8 +49,8 @@ stages:
             base_lr: 0.01
     outs:
     - path: models/model.pkl
-      md5: cf0c77f4d1a1b222e39f83908959449a
-      size: 201335
+      md5: 026179ba1b074018808f600af0168240
+      size: 207322797
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -59,8 +59,8 @@ stages:
       size: 3462943
       nfiles: 34
     - path: models/model.pkl
-      md5: cf0c77f4d1a1b222e39f83908959449a
-      size: 201335
+      md5: 026179ba1b074018808f600af0168240
+      size: 207322797
     - path: src/evaluate.py
       md5: e2d5d64f6064e95b7661b239b8b20626
       size: 3364
