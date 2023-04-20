@@ -1,0 +1,6 @@
+seg-model:
+  labels:
+  - segmentation
+  - cv
+  path: models/model.pkl
+  type: model
