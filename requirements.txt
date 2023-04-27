@@ -2,4 +2,6 @@ dvc[s3]>=2.52.0
 dvclive>=2.6.0
 fastai
 python-box
-torch<2.0
+torch 
+torchvision 
+torchaudio
