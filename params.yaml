@@ -11,7 +11,7 @@ train:
   batch_size: 8
   fine_tune_args:
     epochs: 8
-    base_lr: 0.01
+    base_lr: 0.02
 
 evaluate:
   n_samples_to_save: 10
