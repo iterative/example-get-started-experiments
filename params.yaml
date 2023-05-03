@@ -2,7 +2,7 @@ base:
   random_seed: 42
 
 data_split:
-  test_pct: 0.15
+  test_pct: 0.16
 
 train:
   valid_pct: 0.1
