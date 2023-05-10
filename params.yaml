@@ -8,10 +8,10 @@ train:
   valid_pct: 0.1
   arch: shufflenet_v2_x2_0
   img_size: 256
-  batch_size: 8
+  batch_size: 10
   fine_tune_args:
     epochs: 8
-    base_lr: 0.01
+    base_lr: 0.02
 
 evaluate:
   n_samples_to_save: 10
