@@ -29,3 +29,11 @@ stages:
     params:
     - base
     - evaluate
+artifacts:
+  seg-model:
+    path: models/model.pkl
+    desc: CV model segmenting out swimming pools from satellite images
+    type: model
+    labels:
+    - segmentation
+    - cv
