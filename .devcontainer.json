@@ -1,0 +1,17 @@
+{
+    "name": "example-cv",
+    "image": "mcr.microsoft.com/devcontainers/python:3.10",
+    "runArgs": ["--ipc=host"],
+    "features": {
+      "ghcr.io/devcontainers/features/nvidia-cuda:1": {
+        "installCudnn": true
+      },
+      "ghcr.io/iterative/features/nvtop:1": {}
+    },
+    "extensions": [
+      "Iterative.dvc",
+      "ms-python.python",
+      "redhat.vscode-yaml"
+    ],
+    "postCreateCommand": "pip install --user -r requirements.txt"
+}
