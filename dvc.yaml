@@ -29,3 +29,7 @@ stages:
     params:
     - base
     - evaluate
+artifacts:
+  example-get-started-experiments:
+    path: models/model.pkl
+    type: model
