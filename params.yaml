@@ -1,0 +1,17 @@
+base:
+  random_seed: 42
+
+data_split:
+  test_pct: 0.15
+
+train:
+  valid_pct: 0.1
+  arch: shufflenet_v2_x2_0
+  img_size: 256
+  batch_size: 8
+  fine_tune_args:
+    epochs: 8
+    base_lr: 0.01
+
+evaluate:
+  n_samples_to_save: 10
