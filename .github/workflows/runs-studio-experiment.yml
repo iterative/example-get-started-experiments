@@ -61,5 +61,12 @@ jobs:
           dvc exp run
           dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
           dvc push -r push_remote
+
           cml pr --squash --skip-ci .
+          
+          echo "## Metrics" >> report.md
+          dvc metrics diff --show-md >> report.md
+          echo "## Params" >> report.md
+          dvc params diff --show-md >> report.md
+
           cml comment create --pr results/evaluate/report.md
