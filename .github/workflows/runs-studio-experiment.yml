@@ -65,8 +65,8 @@ jobs:
           cml pr --squash --skip-ci .
           
           echo "## Metrics" >> report.md
-          dvc metrics diff --show-md >> report.md
+          dvc metrics diff main --md >> report.md
           echo "## Params" >> report.md
-          dvc params diff --show-md >> report.md
+          dvc params diff main -md >> report.md
 
-          cml comment create --pr results/evaluate/report.md
+          cml comment create --pr report.md
