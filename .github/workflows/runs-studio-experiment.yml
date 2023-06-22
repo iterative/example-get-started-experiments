@@ -1,5 +1,6 @@
 name: Run Studio Experiment
 on: 
+  workflow_dispatch:
   push:
     paths:
       - ".github/workflows/run-experiment.yaml"
@@ -13,7 +14,7 @@ permissions:
   pull-requests: write
 jobs:
   deploy-runner:
-    if: github.actor == 'iterative-studio[bot]'
+    if: ${{ (github.actor == 'iterative-studio[bot]') || (github.event_name == 'workflow_dispatch') }} 
     environment: cloud
     runs-on: ubuntu-latest
     steps:
