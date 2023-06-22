@@ -70,7 +70,7 @@ jobs:
   
     
       - name: Workflow Dispatch PR
-        if: github.event_name == 'workflow_dispatch')
+        if: github.event_name == 'workflow_dispatch'
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
