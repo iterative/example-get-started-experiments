@@ -56,7 +56,7 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: training
+      - name: Rrain
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
@@ -68,12 +68,25 @@ jobs:
           dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
           dvc push -r push_remote
   
-      - name: report
+    
+      - name: Workflow Dispatch PR
+        if: github.event_name == 'workflow_dispatch')
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          cml pr --skip-ci .
+
+      - name: Studio PR
+        if: github.actor == 'iterative-studio[bot]'
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           cml pr --squash --skip-ci .
 
+      - name: Report
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
           echo "## Metrics" >> report.md
           dvc metrics diff main --md >> report.md
           echo "## Params" >> report.md
