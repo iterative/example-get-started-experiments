@@ -67,6 +67,7 @@ jobs:
           dvc pull
           cml ci --fetch-depth 0
           git status
+          git show -q
           dvc exp run ${{ github.event.inputs.exp-run-args }}
           dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
           dvc push -r push_remote
