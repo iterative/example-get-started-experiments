@@ -51,13 +51,13 @@ stages:
           img_size: 256
           batch_size: 8
           fine_tune_args:
-            epochs: 8
-            base_lr: 0.01
+            epochs: 10
+            base_lr: 0.003
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 884bee1ac4f96dc00ddd183b0c3aa47d
-      size: 200016
+      md5: 4abe1db33e672851d81da4af146294f0
+      size: 201168
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -68,8 +68,8 @@ stages:
       nfiles: 34
     - path: models/model.pkl
       hash: md5
-      md5: 884bee1ac4f96dc00ddd183b0c3aa47d
-      size: 200016
+      md5: 4abe1db33e672851d81da4af146294f0
+      size: 201168
     - path: src/evaluate.py
       hash: md5
       md5: e2d5d64f6064e95b7661b239b8b20626
