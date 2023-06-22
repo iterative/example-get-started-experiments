@@ -1,17 +1,21 @@
 name: Run Studio Experiment
 on: 
   workflow_dispatch:
-  push:
-    paths:
-      - ".github/workflows/run-experiment.yaml"
-      - "data/**"
-      - "src/**"
-      - "params.yaml"
-      - "dvc.*"
+    inputs:
+      exp-run-args:
+        description: 'Args to be passed to dvc exp run call'
+        required: false
+        default: ''
+
+  pull_request:
+    branches:    
+      - main
+
 permissions:
   contents: write
   id-token: write
   pull-requests: write
+
 jobs:
   deploy-runner:
     if: ${{ (github.actor == 'iterative-studio[bot]') || (github.event_name == 'workflow_dispatch') }} 
@@ -27,7 +31,7 @@ jobs:
           role-duration-seconds: 43200
       - name: Create Runner
         env:
-          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cml runner launch --single \
             --labels=cml \
@@ -49,22 +53,27 @@ jobs:
           aws-region: us-east-2
           role-to-assume: arn:aws:iam::342840881361:role/SandboxUser
           role-duration-seconds: 43200
+
+      - run: pip install -r requirements.txt
+
       - name: training
         env:
-          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
-          STUDIO_REPO_URL: ${{ secrets.STUDIO_REPO_URL }}
           DVCLIVE_LOGLEVEL: DEBUG
         run: |
-          pip install -r requirements.txt
           dvc pull
           cml ci --fetch-depth 0
-          dvc exp run
+          dvc exp run ${{ github.event.inputs.exp-run-args }}
           dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
           dvc push -r push_remote
-
+  
+      - name: report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           cml pr --squash --skip-ci .
-          
+
           echo "## Metrics" >> report.md
           dvc metrics diff main --md >> report.md
           echo "## Params" >> report.md
