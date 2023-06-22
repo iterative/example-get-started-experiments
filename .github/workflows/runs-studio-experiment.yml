@@ -31,7 +31,7 @@ jobs:
           role-duration-seconds: 43200
       - name: Create Runner
         env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           cml runner launch --single \
             --labels=cml \
@@ -58,7 +58,7 @@ jobs:
 
       - name: training
         env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
           DVCLIVE_LOGLEVEL: DEBUG
         run: |
@@ -70,7 +70,7 @@ jobs:
   
       - name: report
         env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           cml pr --squash --skip-ci .
 
