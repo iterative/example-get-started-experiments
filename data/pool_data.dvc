@@ -3,3 +3,4 @@ outs:
   size: 18999874
   nfiles: 183
   path: pool_data
+  hash: md5
