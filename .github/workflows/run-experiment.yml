@@ -1,15 +1,14 @@
 name: Run Experiment
 on: 
+
+  push:
+
   workflow_dispatch:
     inputs:
       exp-run-args:
         description: 'Args to be passed to dvc exp run call'
         required: false
         default: ''
-
-  pull_request:
-    branches:    
-      - main
 
 permissions:
   contents: write
