@@ -10,7 +10,7 @@ metrics.json
 
 |   train.loss |   eval.loss |   dice_multi |   step |
 |--------------|-------------|--------------|--------|
-|    0.0271412 |   0.0259436 |     0.870408 |      8 |
+|    0.0308825 |   0.0285849 |     0.863453 |      8 |
 
 ![static/dice_multi](static/dice_multi.png)
 

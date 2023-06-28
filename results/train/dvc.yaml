@@ -8,4 +8,4 @@ artifacts:
     - cv
     - segmentation
     - satellite-images
-    - shufflenet_v2_x2_0
+    - squeezenet1_1
