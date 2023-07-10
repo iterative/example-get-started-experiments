@@ -1,0 +1,18 @@
+params:
+- params.yaml
+metrics:
+- metrics.json
+plots:
+- plots/metrics:
+    x: step
+artifacts:
+  pool-segmentation:
+    path: ../../models/model.pkl
+    type: model
+    desc: This is a Computer Vision (CV) model that's segmenting out swimming pools
+      from satellite images.
+    labels:
+    - cv
+    - segmentation
+    - satellite-images
+    - unet
