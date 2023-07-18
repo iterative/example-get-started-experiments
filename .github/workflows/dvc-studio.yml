@@ -70,12 +70,12 @@ jobs:
         run: |
           cml runner launch --single \
             --labels=cml \
-            --cloud=${{ inputs.cloud }} \
-            --cloud-region=${{ inputs.region }} \
-            --cloud-hdd-size=${{ inputs.storage }} \
-            --cloud-type=${{ inputs.type }} \
-            --idle-timeout=${{ inputs.timeout }} \
-             ${{ inputs.spot && '--cloud-spot' || '' }}
+            --cloud=${{ inputs.cloud || 'aws' }} \
+            --cloud-region=${{ inputs.region || 'us-east' }} \
+            --cloud-hdd-size=${{ inputs.storage || '40' }} \
+            --cloud-type=${{ inputs.type || 'g5.2xlarge' }} \
+            --idle-timeout=${{ inputs.timeout || '3600' }} \
+             ${{ inputs.spot && '--cloud-spot' }}
 
   runner-job:
     needs: deploy-runner
