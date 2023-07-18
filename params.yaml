@@ -2,8 +2,8 @@ base:
   random_seed: 42
 
 data_split:
-  test_regions: 
-    - REGION_1
+  test_regions:
+  - REGION_1
 
 train:
   valid_pct: 0.1
@@ -11,7 +11,7 @@ train:
   img_size: 256
   batch_size: 8
   fine_tune_args:
-    epochs: 8
+    epochs: 10
     base_lr: 0.01
 
 evaluate:
