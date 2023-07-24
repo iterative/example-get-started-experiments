@@ -1,0 +1,26 @@
+params:
+- params.yaml
+metrics:
+- metrics.json
+plots:
+- plots/metrics:
+    x: step
+- plots/images
+- plots/sklearn/confusion_matrix.json:
+    template: confusion
+    x: actual
+    y: predicted
+    title: Confusion Matrix
+    x_label: True Label
+    y_label: Predicted Label
+artifacts:
+  pool-segmentation:
+    path: artifacts/best.pt
+    type: model
+    desc: This is a Computer Vision (CV) model that's segmenting out swimming pools
+      from satellite images.
+    labels:
+    - cv
+    - segmentation
+    - satellite-images
+    - yolo

@@ -1,0 +1,3 @@
+epochs: 20
+imgsz: 384
+model: yolov8n-seg.pt

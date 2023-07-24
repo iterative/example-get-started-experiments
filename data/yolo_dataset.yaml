@@ -1,0 +1,8 @@
+
+path: ./yolo_dataset
+train: train
+val: val
+
+names:
+  0: swimming_pool
+    
