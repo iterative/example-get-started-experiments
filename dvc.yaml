@@ -1,0 +1,15 @@
+stages:
+  create_yolo_dataset:
+    cmd: python src/create_yolo_dataset.py ${create_yolo_dataset}
+    deps:
+    - data/pool_data
+    - src/create_yolo_dataset.py
+    outs:
+    - data/yolo_dataset/train
+    - data/yolo_dataset/val
+  train:
+    cmd: yolo settings datasets_dir=data dvc=false && python src/train.py ${train}
+    deps:
+    - data/yolo_dataset/train
+    - data/yolo_dataset/val
+    - src/train.py

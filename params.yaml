@@ -1,0 +1,9 @@
+create_yolo_dataset:
+  test_regions: 
+    - REGION_1
+
+train:
+  data: data/yolo_dataset.yaml
+  epochs: 30
+  imgsz: 512
+  model: yolov8n-seg.pt
