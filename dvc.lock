@@ -1,0 +1,43 @@
+schema: '2.0'
+stages:
+  create_yolo_dataset:
+    cmd: python src/create_yolo_dataset.py --test_regions REGION_1
+    deps:
+    - path: data/pool_data
+      hash: md5
+      md5: 14d187e749ee5614e105741c719fa185.dir
+      size: 18999874
+      nfiles: 183
+    - path: src/create_yolo_dataset.py
+      hash: md5
+      md5: c13b186e302f49b0ad0d6ce5e671de53
+      size: 1667
+    outs:
+    - path: data/yolo_dataset/train
+      hash: md5
+      md5: 5725466dfe45166a042311022a1eccfc.dir
+      size: 16700776
+      nfiles: 158
+    - path: data/yolo_dataset/val
+      hash: md5
+      md5: 0bcbd1163071b0d22e6da9f939068dc7.dir
+      size: 2061910
+      nfiles: 24
+  train:
+    cmd: yolo settings datasets_dir=data dvc=false && python src/train.py --data data/yolo_dataset.yaml
+      --epochs 30 --imgsz 512 --model yolov8n-seg.pt
+    deps:
+    - path: data/yolo_dataset/train
+      hash: md5
+      md5: 5725466dfe45166a042311022a1eccfc.dir
+      size: 16700776
+      nfiles: 158
+    - path: data/yolo_dataset/val
+      hash: md5
+      md5: 0bcbd1163071b0d22e6da9f939068dc7.dir
+      size: 2061910
+      nfiles: 24
+    - path: src/train.py
+      hash: md5
+      md5: 8b9f16b74950cbb6b86df9c45b004fdf
+      size: 2850
