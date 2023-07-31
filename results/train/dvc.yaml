@@ -15,4 +15,4 @@ artifacts:
     - cv
     - segmentation
     - satellite-images
-    - unet
+    - shufflenet_v2_x2_0
