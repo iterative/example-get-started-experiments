@@ -53,7 +53,7 @@ $ dvc pull
 ## Running in your environment
 
 Run [`dvc exp run`](https://man.dvc.org/exp/run) to reproduce the
-[pipeline](https://dvc.org/doc/user-guide/pipelines/defining-pipelinese):
+[pipeline](https://dvc.org/doc/user-guide/pipelines/defining-pipelines):
 
 ```console
 $ dvc exp run
