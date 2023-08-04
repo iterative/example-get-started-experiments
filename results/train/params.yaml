@@ -1,5 +1,5 @@
 model: DynamicUnet
-batch_size: 8
+batch_size: 4
 batch_per_epoch: 9
 frozen: false
 frozen_idx: 0
