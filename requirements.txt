@@ -1,0 +1,5 @@
+dvc[s3]>=3.0
+dvclive>=2.11.3
+fastai
+python-box
+sagemaker
