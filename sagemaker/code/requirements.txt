@@ -1,0 +1,4 @@
+fastai
+pillow
+torch
+torchvision
