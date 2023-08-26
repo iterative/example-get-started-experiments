@@ -1,0 +1,100 @@
+schema: '2.0'
+stages:
+  data_split:
+    cmd: python src/data_split.py
+    deps:
+    - path: data/pool_data
+      hash: md5
+      md5: 14d187e749ee5614e105741c719fa185.dir
+      size: 18999874
+      nfiles: 183
+    - path: src/data_split.py
+      hash: md5
+      md5: 280fa1684c5496fb9f76ff8c96bd2561
+      size: 1035
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        data_split:
+          test_regions:
+          - REGION_1
+    outs:
+    - path: data/test_data
+      hash: md5
+      md5: 1bb16eb1219b47a8bf711ade27c476e4.dir
+      size: 2087761
+      nfiles: 24
+    - path: data/train_data
+      hash: md5
+      md5: a28a7e4d342c27c1d7ad3c17ec1dfa7a.dir
+      size: 16905965
+      nfiles: 158
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/train_data
+      hash: md5
+      md5: a28a7e4d342c27c1d7ad3c17ec1dfa7a.dir
+      size: 16905965
+      nfiles: 158
+    - path: src/train.py
+      hash: md5
+      md5: 00c331eecc7d9d9abaf65ee6e852c988
+      size: 2520
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        train:
+          valid_pct: 0.1
+          arch: shufflenet_v2_x2_0
+          img_size: 256
+          batch_size: 8
+          fine_tune_args:
+            epochs: 8
+            base_lr: 0.01
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 179225c87b4086bb35c044f54c654c80
+      size: 200592
+    - path: models/model.pth
+      hash: md5
+      md5: 2cd622cb1c226283521079fc4345659e
+      size: 164270
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/test_data
+      hash: md5
+      md5: 1bb16eb1219b47a8bf711ade27c476e4.dir
+      size: 2087761
+      nfiles: 24
+    - path: models/model.pkl
+      hash: md5
+      md5: 179225c87b4086bb35c044f54c654c80
+      size: 200592
+    - path: src/evaluate.py
+      hash: md5
+      md5: 3322a933cb37bcc6680aa145e8832e3c
+      size: 3354
+    params:
+      params.yaml:
+        base:
+          random_seed: 42
+        evaluate:
+          n_samples_to_save: 10
+  sagemaker:
+    cmd: cp models/model.pth sagemaker/code/model.pth && cd sagemaker && tar -cpzf
+      model.tar.gz code/ && cd .. && mv sagemaker/model.tar.gz .  && rm sagemaker/code/model.pth
+    deps:
+    - path: models/model.pth
+      hash: md5
+      md5: 2cd622cb1c226283521079fc4345659e
+      size: 164270
+    outs:
+    - path: model.tar.gz
+      hash: md5
+      md5: 26eda5d06d0a4d3df612e7a0a13cb7c5
+      size: 145366
