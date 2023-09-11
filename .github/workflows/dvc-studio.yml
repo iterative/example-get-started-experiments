@@ -92,7 +92,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-east-2
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ vars.AWS_SANDBOX_ROLE }}
           role-duration-seconds: 43200
 
       - run: pip install -r requirements.txt
