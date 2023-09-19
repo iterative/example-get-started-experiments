@@ -1,0 +1,70 @@
+name: Deploy model
+
+on:
+  push:
+    # When a new version is registered in Studio Model Registry
+    tags:
+      - "results/train=pool-segmentation#*"
+
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Manual version name'
+        required: true
+        type: string
+  
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  parse:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: "Parse GTO tag"
+      id: gto
+      uses: iterative/gto-action@14723404a00bb0c1e759c02ffcd24279df5815c2
+    outputs:
+      event: ${{ steps.gto.outputs.event }}
+      name: ${{ steps.gto.outputs.name }}
+      stage: ${{ steps.gto.outputs.stage }}
+      version: ${{ steps.gto.outputs.version }}
+
+  deploy-model:
+    needs: parse
+    if: ${{ needs.parse.outputs.event }} == 'assignment'
+    environment: cloud
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-region: us-east-2
+        role-to-assume: ${{ vars.AWS_SAGEMAKER_ROLE }}
+        role-duration-seconds: 43200
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+        cache: 'pip'
+        cache-dependency-path: requirements.txt
+
+    - run: pip install -r requirements.txt
+
+    - run:  dvc remote add -d --local storage s3://dvc-public/remote/get-started-pools
+
+    - run: |
+        MODEL_DATA=$(dvc get --show-url . model.tar.gz)
+        python sagemaker/deploy_model.py \
+        --name ${{ needs.parse.outputs.name }} \
+        --stage ${{ needs.parse.outputs.stage }} \
+        --version ${{ needs.parse.outputs.version }} \
+        --model_data $MODEL_DATA \
+        --role ${{ vars.AWS_SANDBOX_ROLE }}
