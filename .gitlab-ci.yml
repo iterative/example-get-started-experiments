@@ -1,0 +1,52 @@
+variables:
+  EXP_RUN_ARGS: ""
+deploy-runner:
+  image: iterativeai/cml:0-dvc2-base1
+  script:
+  - pip install awscli
+  - >
+    CREDENTIALS=($(aws sts assume-role-with-web-identity
+    --region=us-east-1
+    --role-arn=arn:aws:iam::342840881361:role/SandboxUser
+    --role-session-name=GitLab
+    --duration-seconds=3600
+    --web-identity-token="$CI_JOB_JWT_V2"
+    --query="Credentials.[AccessKeyId,SecretAccessKey,SessionToken]"
+    --output=text))
+  - export AWS_ACCESS_KEY_ID="${CREDENTIALS[0]}"
+  - export AWS_SECRET_ACCESS_KEY="${CREDENTIALS[1]}"
+  - export AWS_SESSION_TOKEN="${CREDENTIALS[2]}"
+  - aws sts get-caller-identity
+  - >
+    cml runner launch --single \
+      --labels=cml \
+      --cloud=aws \
+      --cloud-region=us-east \
+      --cloud-hdd-size=40 \
+      --cloud-type=g5.2xlarge
+runner-job:
+  needs:
+    - deploy-runner
+  tags:
+    - cml
+  image: iterativeai/cml:0-dvc2-base1
+  script:
+  - pip install awscli
+  - >
+    CREDENTIALS=($(aws sts assume-role-with-web-identity
+    --region=us-east-1
+    --role-arn=arn:aws:iam::342840881361:role/SandboxUser
+    --role-session-name=GitLab
+    --duration-seconds=3600
+    --web-identity-token="$CI_JOB_JWT_V2"
+    --query="Credentials.[AccessKeyId,SecretAccessKey,SessionToken]"
+    --output=text))
+  - export AWS_ACCESS_KEY_ID="${CREDENTIALS[0]}"
+  - export AWS_SECRET_ACCESS_KEY="${CREDENTIALS[1]}"
+  - export AWS_SESSION_TOKEN="${CREDENTIALS[2]}"
+  - aws sts get-caller-identity
+  - pip install -r requirements.txt
+  - cml ci
+  - dvc exp run --pull --allow-missing $EXP_RUN_ARGS
+  - dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
+  - dvc exp push origin -r push_remote
