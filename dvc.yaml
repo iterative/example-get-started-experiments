@@ -16,3 +16,42 @@ artifacts:
     - segmentation
     - satellite-images
     - unet
+stages:
+  data_split:
+    cmd: python src/data_split.py
+    deps:
+    - data/pool_data
+    - src/data_split.py
+    params:
+    - base
+    - data_split
+    outs:
+    - data/test_data
+    - data/train_data
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/train_data
+    - src/train.py
+    params:
+    - base
+    - train
+    outs:
+    - models/model.pkl
+    - models/model.pth
+  evaluate:
+    cmd: python src/evaluate.py -o results
+    deps:
+    - data/test_data
+    - models/model.pkl
+    - src/evaluate.py
+    params:
+    - base
+    - evaluate
+  sagemaker:
+    cmd: cp models/model.pth sagemaker/code/model.pth && cd sagemaker && tar -cpzf
+      model.tar.gz code/ && cd .. && mv sagemaker/model.tar.gz .  && rm sagemaker/code/model.pth
+    deps:
+    - models/model.pth
+    outs:
+    - model.tar.gz
