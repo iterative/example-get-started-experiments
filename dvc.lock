@@ -48,7 +48,7 @@ stages:
           random_seed: 42
         train:
           valid_pct: 0.1
-          arch: shufflenet_v2_x2_0
+          arch: resnet34
           img_size: 256
           batch_size: 8
           fine_tune_args:
@@ -57,12 +57,12 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 67a489d31e17c645505eead96fc8e253
-      size: 200656
+      md5: 850cb1fd4ea577b4f654c241108a78d0
+      size: 207331329
     - path: models/model.pth
       hash: md5
-      md5: f92191ae9b9022f9f8f8f5afc6cc5b0b
-      size: 164270
+      md5: 636749860b211ec3b5ed2b48c92bab4a
+      size: 207282393
   evaluate:
     cmd: python src/evaluate.py -o results
     deps:
@@ -73,8 +73,8 @@ stages:
       nfiles: 24
     - path: models/model.pkl
       hash: md5
-      md5: 67a489d31e17c645505eead96fc8e253
-      size: 200656
+      md5: 850cb1fd4ea577b4f654c241108a78d0
+      size: 207331329
     - path: src/evaluate.py
       hash: md5
       md5: 84d2fd3b371546730396a763a51527a0
@@ -91,10 +91,10 @@ stages:
     deps:
     - path: models/model.pth
       hash: md5
-      md5: f92191ae9b9022f9f8f8f5afc6cc5b0b
-      size: 164270
+      md5: 636749860b211ec3b5ed2b48c92bab4a
+      size: 207282393
     outs:
     - path: model.tar.gz
       hash: md5
-      md5: f9490b5fd220412065260226467640a4
-      size: 145544
+      md5: 1e848cacd0a34f909d99c131db969b9b
+      size: 180318649
