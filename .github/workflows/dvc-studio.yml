@@ -1,0 +1,137 @@
+name: DVC Studio Experiment
+
+on:
+
+  push:
+    tags-ignore:
+      - '**'
+
+  workflow_dispatch:
+    inputs:
+      exp-run-args:
+        description: 'Args to be passed to dvc exp run call'
+        required: false
+        type: string
+        default: ''
+      parent-sha:
+        description: 'SHA of the commit to start the experiment from'
+        required: false
+        type: string
+        default: ''
+      cloud:
+        description: 'Cloud compute provider to host the runner'
+        required: false
+        default: 'aws'
+        type: choice
+        options:
+          - aws
+          - azure
+          - gcp
+      type:
+        description: 'https://registry.terraform.io/providers/iterative/iterative/latest/docs/resources/task#machine-type'
+        required: false
+        default: 'g5.2xlarge'
+      region:
+        description: 'https://registry.terraform.io/providers/iterative/iterative/latest/docs/resources/task#cloud-region'
+        required: false
+        default: 'us-east'
+      spot:
+        description: 'Request a spot instance'
+        required: false
+        default: false
+        type: boolean
+      storage:
+        description: 'Disk size in GB'
+        required: false
+        default: 40
+        type: number
+      timeout:
+        description: 'Timeout in seconds'
+        required: false
+        default: 3600
+        type: number
+  
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+jobs:
+
+  deploy-runner:
+    if: ${{ (github.actor == 'iterative-studio[bot]') || (github.event_name == 'workflow_dispatch') }} 
+    environment: cloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.parent-sha || '' }}
+      - uses: iterative/setup-cml@v2
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-2
+          role-to-assume: ${{ vars.AWS_SANDBOX_ROLE }}
+          role-duration-seconds: 43200
+      - name: Create Runner
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          cml runner launch --single \
+            --labels=cml \
+            --cloud=${{ inputs.cloud || 'aws' }} \
+            --cloud-region=${{ inputs.region || 'us-east' }} \
+            --cloud-hdd-size=${{ inputs.storage || '40' }} \
+            --cloud-type=${{ inputs.type || 'g5.2xlarge' }} \
+            --idle-timeout=${{ inputs.timeout || '3600' }} \
+             ${{ (inputs.spot == 'true' && '--cloud-spot') || '' }}
+
+  runner-job:
+    needs: deploy-runner
+    runs-on: [ self-hosted, cml ]
+    environment: cloud
+    container:
+      image: iterativeai/cml:latest-gpu
+      options: --gpus all --ipc host
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.parent-sha || '' }}
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-2
+          role-to-assume: ${{ vars.AWS_SANDBOX_ROLE }}
+          role-duration-seconds: 43200
+
+      - run: pip install -r requirements.txt
+
+      - name: Train
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
+          DVCLIVE_LOGLEVEL: DEBUG
+        run: |
+          cml ci --fetch-depth 0
+          dvc exp run --pull --allow-missing ${{ github.event.inputs.exp-run-args }}
+          dvc remote add --local push_remote s3://dvc-public/remote/get-started-pools 
+
+      - name: Workflow Dispatch Sharing
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          STUDIO_TOKEN: ${{ secrets.STUDIO_TOKEN }}
+        run: |
+          dvc exp push origin -r push_remote
+
+      - name: Commit-based Sharing
+        if: github.actor == 'iterative-studio[bot]'
+        env:
+          REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          dvc push -r push_remote
+          cml pr --squash --skip-ci .
+          echo "## Metrics" > report.md
+          dvc metrics diff main --md >> report.md
+          echo "## Params" >> report.md
+          dvc params diff main --md >> report.md
+          cml comment create --pr report.md
