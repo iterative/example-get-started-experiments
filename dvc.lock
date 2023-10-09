@@ -48,7 +48,7 @@ stages:
           random_seed: 42
         train:
           valid_pct: 0.1
-          arch: shufflenet_v2_x2_0
+          arch: resnet34
           img_size: 256
           batch_size: 8
           fine_tune_args:
@@ -57,16 +57,16 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 8e790992eed47d33b14b1f7b7247c251
-      size: 200656
+      md5: 316245f56145885f6b14473c63b8abdc
+      size: 207331329
     - path: models/model.pth
       hash: md5
-      md5: e0d971a414f95e5cf6157ff746649dc5
-      size: 164270
+      md5: 908b513ed8990b1ff498c529a9eb9730
+      size: 207282393
     - path: results/train
       hash: md5
-      md5: 0c90bafead33f9494f0f6dccbf3561c9.dir
-      size: 956
+      md5: 77e3f4e2a37404f1cf0dc6fc590ca48e.dir
+      size: 958
       nfiles: 5
   evaluate:
     cmd: python src/evaluate.py
@@ -78,8 +78,8 @@ stages:
       nfiles: 24
     - path: models/model.pkl
       hash: md5
-      md5: 8e790992eed47d33b14b1f7b7247c251
-      size: 200656
+      md5: 316245f56145885f6b14473c63b8abdc
+      size: 207331329
     - path: src/evaluate.py
       hash: md5
       md5: 84d2fd3b371546730396a763a51527a0
@@ -93,8 +93,8 @@ stages:
     outs:
     - path: results/evaluate
       hash: md5
-      md5: 9997a9979761c7e563c99e4824e4680f.dir
-      size: 1257954
+      md5: 334ec51a2378936623f6d1e65f14efaa.dir
+      size: 1252341
       nfiles: 11
   sagemaker:
     cmd: cp models/model.pth sagemaker/code/model.pth && cd sagemaker && tar -cpzf
@@ -102,10 +102,10 @@ stages:
     deps:
     - path: models/model.pth
       hash: md5
-      md5: e0d971a414f95e5cf6157ff746649dc5
-      size: 164270
+      md5: 908b513ed8990b1ff498c529a9eb9730
+      size: 207282393
     outs:
     - path: model.tar.gz
       hash: md5
-      md5: 4aef878b371bef16439082eb75722724
-      size: 145574
+      md5: 16d6e4a6328ca2857c1acd1bd3aa86cd
+      size: 180318789
