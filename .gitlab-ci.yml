@@ -1,0 +1,39 @@
+# Deploy Model (Template)
+
+workflow:
+  rules:
+    # Run the pipeline whenever a tag is pushed to the repository
+    - if: $CI_COMMIT_TAG
+
+parse:
+  # This job parses the model tag to identify model registry actions
+  image: python:3.11-slim
+  script: 
+  # Install GTO to parse model tags
+  - pip install gto
+  # This job parses the model tags to identify model registry actions
+  - echo "CI_COMMIT_TAG - ${CI_COMMIT_TAG}" 
+  - echo MODEL_NAME="$(gto check-ref ${CI_COMMIT_TAG} --name)" >> parse.env
+  - echo MODEL_VERSION="$(gto check-ref ${CI_COMMIT_TAG} --version)" >> parse.env
+  - echo MODEL_EVENT="$(gto check-ref ${CI_COMMIT_TAG} --event)" >> parse.env
+  - echo MODEL_STAGE="$(gto check-ref ${CI_COMMIT_TAG} --stage)" >> parse.env
+  # Print variables saved to parse.env
+  - cat parse.env
+  artifacts:
+    reports:
+      dotenv: parse.env
+
+deploy-model:
+  needs:
+  - job: parse
+    artifacts: true
+  image: python:3.11-slim
+  script: 
+  # Check if the model is assigned to prod (variables from parse.env are only available in the 'script' section)
+  - if [[ $MODEL_EVENT == 'assignment' && $MODEL_STAGE == 'prod' ]]; then echo "Deploy model"; else exit 1; fi
+  # Install DVC
+  - pip install dvc
+  # Build commands to download and deploy the model
+  - dvc config --global studio.token ${DVC_STUDIO_TOKEN}
+  - dvc artifacts get  ${CI_REPOSITORY_URL} ${MODEL_NAME} --rev ${MODEL_VERSION}
+  - echo "The right model is available and you can use the rest of this command to deploy it. Good job!"
