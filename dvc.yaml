@@ -6,6 +6,7 @@ metrics:
 plots:
 - results/train/plots/metrics:
     x: step
+- results/evaluate/plots/images
 artifacts:
   pool-segmentation:
     path: models/model.pkl
@@ -16,7 +17,7 @@ artifacts:
     - cv
     - segmentation
     - satellite-images
-    - unet
+    - shufflenet_v2_x2_0
 stages:
   data_split:
     cmd: python src/data_split.py
