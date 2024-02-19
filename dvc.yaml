@@ -17,7 +17,7 @@ artifacts:
     - cv
     - segmentation
     - satellite-images
-    - shufflenet_v2_x2_0
+    - resnet34
 stages:
   data_split:
     cmd: python src/data_split.py
